@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e # Exit the Script on Error Message
 
+# TODO execute functions, create mother functions that run other functions (system_update -> update_flatpak % update_dnf)
+
+
 # Redirect output to a log file in the same directory
 LOG_FILE="fedora-postinstall.log"
 ERROR_LOG_FILE="fedora-postinstall-error.log"
@@ -9,8 +12,10 @@ exec 2> >(tee -i "$ERROR_LOG_FILE")
 echo
 date
 
-PACKAGES_DNF="vim tldr htop bpytop neofetch hwinfo gnome-tweaks timeshift veracrypt mpv steam nextcloud-client goverlay mangohud vkbasalt gamemode virt-manager qemu wine winetricks"
+PACKAGES_DNF="vim tldr htop bpytop neofetch hwinfo gnome-tweaks timeshift veracrypt mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkbasalt gamemode virt-manager qemu wine winetricks"
+PACKAGES_DNF_UNINSTALL="gnome-tour rhythmbox"
 PACKAGES_FLATPAK="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious org.upscayl.Upscayl io.github.seadve.Mousai fr.romainvigier.MetadataCleaner"
+
 
 # Function to check for root privileges
 check_rootaccess() {
@@ -48,6 +53,21 @@ initial_prompt() {
 ##############################################
 
 
+# Function to run all 'system' functions
+batch_system() {
+speed_up_dnf
+enable_flatpak
+enable_rpmfusion
+update_system
+uninstall_unwanted_software
+install_software_dnf
+install_software_flatpak
+install_codecs
+update_system
+system_cleanup
+}
+
+
 # Function to speed up DNF
 speed_up_dnf() {
   echo "Speeding up DNF..."
@@ -73,7 +93,6 @@ enable_flatpak() {
       return
     fi
   fi
-
   sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   sudo flatpak -y update
   echo "Flatpak has been enabled."
@@ -110,6 +129,7 @@ enable_rpmfusion() {
 update_system() {
   update_dnf
   update_flatpak
+  update_firmware
   echo "The System has been updated."
   echo
 }
@@ -134,6 +154,11 @@ update_dnf() {
 # Function to update the flatpak packages
 update_flatpak() {
   echo "Updating Flatpak Packages..."
+  if ! command -v flatpak >/dev/null 2>&1; then
+    echo "Error: 'flatpak' command not found, skipping step." >&2
+    echo
+    return
+  fi
   sudo flatpak -y updates
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: Flatpak Packages could not be updated, skipping step." >&2
@@ -151,7 +176,7 @@ update_firmware() {
   echo "Updating the Firmware..."
 
   if ! command -v fwupdmgr >/dev/null 2>&1; then # Check if 'fwupdmgr' command is not available
-    echo "Error: 'fwupdmgr' command not found. Firmware update skipped." >&2
+    echo "Error: 'fwupdmgr' command not found, skipping step." >&2
     echo
     return
   fi
@@ -174,7 +199,7 @@ update_firmware() {
 # Function to remove unwanted software
 uninstall_unwanted_software() {
 	echo "Uninstalling unwanted software..."
-	sudo dnf -y remove
+	sudo dnf -y remove $PACKAGES_DNF_UNINSTALL
 	echo "Unwanted software has been uninstalled."
 	echo
 }
@@ -228,12 +253,24 @@ system_cleanup() {
 ##############################################
 
 
+# Function to run all 'personalization' functions.
+batch_personalize() {
+  setup_mouse
+  setup_keyboard
+  setup_fonts
+  setup_desktop
+  enable_nightlight
+  setup_nautilus
+  setup_texteditor
+}
+
+
 # Function to enable dark mode
 enable_darkmode() {
   echo "Enabling dark mode..."
   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
   gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
-  echo "Dark mode has been enabled"
+  echo "Dark mode has been enabled."
   echo
 }
 
@@ -246,6 +283,8 @@ enable_nightlight() {
   gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-from '22'
   gsettings set org.gnome.settings-daemon.plugins.color night-light-schedule-to '9'
   gsettings set org.gnome.settings-daemon.plugins.color night-light-temperature '4000'
+  echo "Night light has been enabled."
+  echo
 }
 
 # Function to set up the mouse/touchpad
@@ -347,6 +386,7 @@ setup_nautilus() {
   gsettings set org.gtk.gtk4.Settings.FileChooser sort-directories-first 'true'
   gsettings set org.gtk.gtk4.Settings.FileChooser show-hidden 'true'
   echo "Nautilus has been set up."
+  echo
 }
 
 
@@ -405,27 +445,14 @@ echo
 ##############################################
 
 
-# Function to install & configure fail2ban
-install_fail2ban() {
-	echo "Installing and configuring Fail2Ban..."
-	sudo dnf -y install fail2ban
-	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-
-	echo "
-	[sshd]
-	enabled = true
-	port = ssh
-	filter = sshd
-	logpath = /var/log/auth.log
-	maxretry = 3
-	bantime = 3600
-	" >> /etc/fail2ban/jail.local
-
-	sudo systemctl start fail2ban
-	sudo systemctl enable fail2ban
-
-	echo "Fail2Ban has been installed and configured."
-	echo
+# Function to run all 'security' functions
+batch_security() {
+  reduce_inactivity_time
+  enable_remove_old_temp_files
+  disable_recent_files
+  disable_show_password
+  disable_lockscreen_notifications
+  install_fail2ban
 }
 
 
@@ -473,6 +500,31 @@ disable_lockscreen_notifications() {
 }
 
 
+# Function to install & configure fail2ban
+install_fail2ban() {
+	echo "Installing and configuring Fail2Ban..."
+	sudo dnf -y install fail2ban
+	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+
+	echo "
+	[sshd]
+	enabled = true
+	port = ssh
+	filter = sshd
+	logpath = /var/log/auth.log
+	maxretry = 3
+	bantime = 3600
+	" >> /etc/fail2ban/jail.local
+
+	sudo systemctl start fail2ban
+	sudo systemctl enable fail2ban
+
+	echo "Fail2Ban has been installed and configured."
+	echo
+}
+
+
+
 
 ##############################################
 #             Running the script             #
@@ -483,6 +535,10 @@ check_rootaccess
 initial_prompt
 
 # Execute functions
-
-
-echo "Post-Installation script completed successfully."
+batch_system
+batch_personalize
+batch_security
+echo
+echo "Post-Installation script completed successfully, it is advised to reboot your system now."
+echo
+exit
