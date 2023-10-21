@@ -159,7 +159,7 @@ update_flatpak() {
     echo
     return
   fi
-  sudo flatpak -y updates
+  sudo flatpak -y update
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: Flatpak Packages could not be updated, skipping step." >&2
     echo
