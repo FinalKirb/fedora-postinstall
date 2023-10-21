@@ -328,7 +328,7 @@ setup_keyboard() {
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'flatpak run com.discordapp.Discord'
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ binding '<Super>d'
 
-  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings '['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']'
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/']"
 
   echo "Keyboard shortcuts have been set up."
   echo
@@ -363,7 +363,7 @@ setup_desktop() {
   gsettings set org.gnome.desktop.calendar show-weekdate 'true'
   gsettings set org.gnome.mutter attach-modal-dialogs 'false'
   gsettings set org.gnome.desktop.interface show-battery-percentage 'true'
-  gsettings set org.gnome.system.locale 'de_CH.UTF-8'
+  gsettings set org.gnome.system.locale region 'de_CH.UTF-8'
   echo "The desktop has been set up."
   echo
 }
@@ -372,8 +372,8 @@ setup_desktop() {
 # Function to set up nautilus settings
 setup_nautilus() {
   echo "Setting up nautilus..."
-  gsettings set org.gnome.nautilus.list-view default-column-order ['name', 'type', 'size', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'date_created', 'recency', 'starred']
-  gsettings set org.gnome.nautilus.list-view default-visible-columns ['name', 'type', 'size', 'date_modified']
+  gsettings set org.gnome.nautilus.list-view default-column-order "['name', 'type', 'size', 'owner', 'group', 'permissions', 'mime_type', 'where', 'date_modified', 'date_modified_with_time', 'date_accessed', 'date_created', 'recency', 'starred']"
+  gsettings set org.gnome.nautilus.list-view default-visible-columns "['name', 'type', 'size', 'date_modified']"
   gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
   gsettings set org.gnome.nautilus.preferences default-sort-order 'type'
   gsettings set org.gnome.nautilus.preferences show-create-link 'true'
