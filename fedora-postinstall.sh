@@ -310,8 +310,8 @@ setup_keyboard() {
   gsettings set org.gnome.desktop.wm.keybindings minimize '[]'
   gsettings set org.gnome.desktop.wm.keybindings switch-input-source '[]'
   gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward '[]'
-  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left '['<Control><Super>Left']'
-  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right '['<Control><Super>Right']'
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Control><Super>Left']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Control><Super>Right']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys control-center '['<Super>i']' # Super + i -> Opens gnome settings
   gsettings set org.gnome.settings-daemon.plugins.media-keys www '['<Super>b']' # Super + b -> Opens default browser
 
