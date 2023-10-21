@@ -12,7 +12,7 @@ exec 2> >(tee -i "$ERROR_LOG_FILE")
 echo
 date
 
-PACKAGES_DNF="vim tldr htop bpytop neofetch hwinfo gnome-tweaks timeshift veracrypt mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkbasalt gamemode virt-manager qemu wine winetricks"
+PACKAGES_DNF="vim tldr htop bpytop neofetch hwinfo gnome-tweaks timeshift mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkBasalt gamemode virt-manager qemu wine winetricks"
 PACKAGES_DNF_UNINSTALL="gnome-tour rhythmbox"
 PACKAGES_FLATPAK="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious org.upscayl.Upscayl io.github.seadve.Mousai fr.romainvigier.MetadataCleaner"
 
