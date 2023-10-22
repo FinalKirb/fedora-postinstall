@@ -17,13 +17,15 @@ PACKAGES_DNF_UNINSTALL="gnome-tour rhythmbox"
 PACKAGES_FLATPAK="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious org.upscayl.Upscayl io.github.seadve.Mousai fr.romainvigier.MetadataCleaner"
 
 
+# Script no longer checks for root access as it doesn't work with the 'gsettings' commands. Instead, run the script normally (WITHOUT SUDO) and just enter your sudo password when prompted.
+
 # Function to check for root privileges
-check_rootaccess() {
-  if [ "$EUID" -ne 0 ]; then
-    echo "Error: No Root privileges. Please run the script with 'sudo' (recommended!!) or as root user." >&2
-    exit 1
-  fi
-}
+#check_rootaccess() {
+#  if [ "$EUID" -ne 0 ]; then
+#    echo "Error: No Root privileges. Please run the script with 'sudo' (recommended!!) or as root user." >&2
+#    exit 1
+#  fi
+#}
 
 
 # Function for initial prompt
@@ -506,7 +508,7 @@ install_fail2ban() {
 	sudo dnf -y install fail2ban
 	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
-	echo "
+	sudo echo "
 	[sshd]
 	enabled = true
 	port = ssh
@@ -531,7 +533,6 @@ install_fail2ban() {
 ##############################################
 
 # Execute initial prompt
-check_rootaccess
 initial_prompt
 
 # Execute functions
