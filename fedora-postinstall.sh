@@ -61,6 +61,7 @@ speed_up_dnf
 enable_flatpak
 enable_rpmfusion
 update_system
+update_firmware
 uninstall_unwanted_software
 install_software_dnf
 install_software_flatpak
@@ -131,7 +132,6 @@ enable_rpmfusion() {
 update_system() {
   update_dnf
   update_flatpak
-  update_firmware
   echo "The System has been updated."
   echo
 }
@@ -175,26 +175,29 @@ update_flatpak() {
 
 # Function to update the firmware
 update_firmware() {
-  echo "Updating the Firmware..."
+  read -p "Do you want to update your system firmware? (y/n): " confirm1
+  if [ "$confirm1" != "y" ]; then # Press "y" to run the script
+    echo "Updating the Firmware..."
 
-  if ! command -v fwupdmgr >/dev/null 2>&1; then # Check if 'fwupdmgr' command is not available
-    echo "Error: 'fwupdmgr' command not found, skipping step." >&2
+    if ! command -v fwupdmgr >/dev/null 2>&1; then # Check if 'fwupdmgr' command is not available
+      echo "Error: 'fwupdmgr' command not found, skipping step." >&2
+      echo
+      return
+    fi
+
+    sudo fwupdmgr get-devices
+    sudo fwupdmgr refresh --force
+    sudo fwupdmgr get-updates
+    sudo fwupdmgr update
+
+    if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
+      echo "Error: Firmware update failed. Check the logs for more information." >&2
+      echo
+      return
+    fi
+    echo "The Firmware has been updated."
     echo
-    return
   fi
-
-  sudo fwupdmgr get-devices
-  sudo fwupdmgr refresh --force
-  sudo fwupdmgr get-updates
-  sudo fwupdmgr update
-
-  if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
-    echo "Error: Firmware update failed. Check the logs for more information." >&2
-    echo
-    return
-  fi
-  echo "The Firmware has been updated."
-  echo
 }
 
 
