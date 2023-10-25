@@ -424,6 +424,7 @@ alias cd..='cd ..'
 alias ..='cd ..'
 alias ...='cd ../..'
 
+alias neofetch='fastfetch'
 alias vi='vim'
 alias clr='clear'
 
