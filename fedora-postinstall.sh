@@ -395,7 +395,7 @@ setup_nautilus() {
 }
 
 
-# Function to set up the text editor
+# Function to set up the gnome text editor
 setup_texteditor() {
   echo "Setting up the text editor..."
   gsettings set org.gnome.TextEditor highlight-current-line 'true'
