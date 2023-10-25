@@ -38,8 +38,8 @@ initial_prompt() {
     echo
     echo "IMPORTANT: This script comes with NO WARRANTY. It is intended to be used ONCE on a fresh FEDORA LINUX system. By running this script, you acknowledge that you have read and understood the risks involved. The script will perform system updates and software installations. Please be aware that the script may modify system configurations, and that there is a possibility of data loss or system breakage."
     echo
-    read -p "Continue at your own risk. Do you wish to proceed? (y/n): " confirm
-    if [ "$confirm" != "y" ]; then # Press "y" to run the script
+    read -p "Continue at your own risk. Do you wish to proceed? (y/n): " confirm_initial
+    if [ "$confirm_initial" != "y" ]; then # Press "y" to run the script
       echo "Script aborted."
       echo
       exit 1
@@ -179,8 +179,8 @@ update_flatpak() {
 
 # Function to update the firmware
 update_firmware() {
-  read -p "Do you want to update your system firmware? (y/n): " confirm1
-  if [ "$confirm1" != "y" ]; then # Press "y" to run the script
+  read -p "Do you want to update your system firmware? (y/n): " confirm_firmware
+  if [ "$confirm_firmware" != "y" ]; then # Press "y" to run the script
     echo "Updating the Firmware..."
 
     if ! command -v fwupdmgr >/dev/null 2>&1; then # Check if 'fwupdmgr' command is not available
