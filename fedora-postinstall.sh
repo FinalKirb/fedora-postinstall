@@ -97,7 +97,11 @@ enable_flatpak() {
     fi
   fi
   sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  sudo flatpak -y update
+  if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
+    echo "Error: Flathub could not be enabled. Check the logs for more information." >&2
+    echo
+    return
+  fi
   echo "Flatpak has been enabled."
   echo
 }
@@ -205,6 +209,11 @@ update_firmware() {
 uninstall_unwanted_software() {
 	echo "Uninstalling unwanted software..."
 	sudo dnf -y remove $packages_dnf_uninstall
+  if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
+    echo "Error: Software uninstallation failed. Check the logs for more information." >&2
+    echo
+    return
+  fi
 	echo "Unwanted software has been uninstalled."
 	echo
 }
@@ -215,7 +224,7 @@ install_software_dnf() {
 	echo "Installing DNF Packages..."
 	sudo dnf -y install $packages_dnf
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
-    echo "Error: DNF installation failed. Check the logs for more information." >&2
+    echo "Error: DNF packages could not be installed. Check the logs for more information." >&2
     echo
     return
   fi
@@ -228,6 +237,11 @@ install_software_dnf() {
 install_software_flatpak() {
 	echo "Installing Flatpak Packages..."
 	sudo flatpak -y install $packages_flatpak
+  if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
+    echo "Error: Flatpak packages could not be installed. Check the logs for more information." >&2
+    echo
+    return
+  fi
   echo "Flatpak Packages have been installed."
   echo
 }
