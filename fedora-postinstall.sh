@@ -5,16 +5,16 @@ set -e # Exit the Script on Error Message
 
 
 # Redirect output to a log file in the same directory
-LOG_FILE="fedora-postinstall.log"
-ERROR_LOG_FILE="fedora-postinstall-error.log"
-exec > >(tee -i "$LOG_FILE")
-exec 2> >(tee -i "$ERROR_LOG_FILE")
+log_file="fedora-postinstall.log"
+error_log_file="fedora-postinstall-error.log"
+exec > >(tee -i "$log_file")
+exec 2> >(tee -i "$error_log_file")
 echo
 date
 
-PACKAGES_DNF="vim tldr htop bpytop fastfetch hwinfo gnome-tweaks timeshift mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkBasalt gamemode virt-manager qemu wine winetricks"
-PACKAGES_DNF_UNINSTALL="gnome-tour rhythmbox"
-PACKAGES_FLATPAK="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious org.upscayl.Upscayl io.github.seadve.Mousai fr.romainvigier.MetadataCleaner"
+packages_dnf="vim tldr htop bpytop fastfetch hwinfo gnome-tweaks timeshift mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkBasalt gamemode virt-manager qemu wine winetricks"
+packages_dnf_uninstall="gnome-tour rhythmbox"
+packages_flatpak="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious org.upscayl.Upscayl io.github.seadve.Mousai fr.romainvigier.MetadataCleaner"
 
 
 # Script no longer checks for root access as it doesn't work with the 'gsettings' commands. Instead, run the script normally (WITHOUT SUDO) and just enter your sudo password when prompted.
@@ -106,8 +106,8 @@ enable_flatpak() {
 # Function to enable RPMFusion
 enable_rpmfusion() {
   echo "Enabling RPMFusion..."
-  RPMFUSION_FREE_URL="https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
-  RPMFUSION_NONFREE_URL="https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
+  rpmfusion_free_url="https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm"
+  rpmfusion_nonfree_url="https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
 
   sudo dnf -y install $RPMFUSION_FREE_URL $RPMFUSION_NONFREE_URL
   if [ $? -ne 0 ]; then
@@ -204,7 +204,7 @@ update_firmware() {
 # Function to remove unwanted software
 uninstall_unwanted_software() {
 	echo "Uninstalling unwanted software..."
-	sudo dnf -y remove $PACKAGES_DNF_UNINSTALL
+	sudo dnf -y remove $packages_dnf_uninstall
 	echo "Unwanted software has been uninstalled."
 	echo
 }
@@ -213,7 +213,7 @@ uninstall_unwanted_software() {
 # Function to install DNF packages
 install_software_dnf() {
 	echo "Installing DNF Packages..."
-	sudo dnf -y install $PACKAGES_DNF
+	sudo dnf -y install $packages_dnf
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: DNF installation failed. Check the logs for more information." >&2
     echo
@@ -227,7 +227,7 @@ install_software_dnf() {
 # Function to install Flatpak packages
 install_software_flatpak() {
 	echo "Installing Flatpak Packages..."
-	sudo flatpak -y install $PACKAGES_FLATPAK
+	sudo flatpak -y install $packages_flatpak
   echo "Flatpak Packages have been installed."
   echo
 }
