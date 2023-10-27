@@ -430,7 +430,10 @@ setup_aliases() {
 
   cat <<EOL >> "$HOME/.bashrc" # Creates a temporary 'here document' (<<EOL (content) EOL) which passes a block of text to a command, in this case cat, which delegates/writes the 'here document' with the aliases to .bashrc
 
-# Custom Aliases
+# Custom Aliases and functions
+
+PS1='[\t][\u@\H \w]\$ '
+
 alias shutdown='sudo shutdown'
 alias reboot='sudo reboot'
 
