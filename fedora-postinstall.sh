@@ -475,6 +475,7 @@ batch_security() {
   disable_recent_files
   disable_show_password
   disable_lockscreen_notifications
+  secure_ssh
   install_fail2ban
 }
 
@@ -520,6 +521,35 @@ disable_lockscreen_notifications() {
   gsettings set org.gnome.desktop.notifications show-in-lock-screen 'false'
   echo "Notifications in the lock screens have been disabled."
   echo
+}
+
+
+# Function to secure SSH settings
+secure_ssh() {
+  sshd_config="/etc/ssh/sshd_config"
+
+  # Check if the $sshd_config file exists
+  if [ ! -f "$sshd_config" ]; then
+    echo "Error: SSH server configuration file not found at $sshd_config" >&2
+    echo
+    return
+  fi
+
+  # Backup the original $sshd_config file
+  cp "$sshd_config" "$sshd_config.bak"
+
+  # Disable PermitRootLogin
+  sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' "$sshd_config"
+  echo "PermitRootLogin has been disabled"
+
+  # Disable PasswordAuthentication (Use SSH Keys instead)
+  sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' "$sshd_config"
+  echo "PasswordAuthentication has been disabled"
+
+  # Restart the SSH Server to apply changes
+  systemctl restart sshd
+
+  echo "SSH server has been secured. Please make sure to use key-based authentication for SSH access."
 }
 
 
