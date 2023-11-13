@@ -180,7 +180,7 @@ update_flatpak() {
 # Function to update the firmware
 update_firmware() {
   read -p "Do you want to update your system firmware? (y/n): " confirm_firmware
-  if [ "$confirm_firmware" != "y" ]; then # Press "y" to run the script
+  if [ "$confirm_firmware" == "y" ]; then # Press "y" to run the script
     echo "Updating the Firmware..."
 
     if ! command -v fwupdmgr >/dev/null 2>&1; then # Check if 'fwupdmgr' command is not available
@@ -597,7 +597,7 @@ batch_security
 echo
 echo "Post-Installation script completed successfully."
 read -p "Do you want to reboot your system now?" confirm_reboot
-if [ "$confirm_reboot" != "y" ]; then # Press "y" to confirm reboot
+if [ "$confirm_reboot" == "y" ]; then # Press "y" to confirm reboot
   sudo reboot
   exit
 fi
