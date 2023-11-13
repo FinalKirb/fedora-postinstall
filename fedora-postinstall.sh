@@ -540,18 +540,18 @@ secure_ssh() {
   fi
 
   # Backup the original $sshd_config file
-  cp "$sshd_config" "$sshd_config.bak"
+  sudo cp "$sshd_config" "$sshd_config.bak"
 
   # Disable PermitRootLogin
-  sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' "$sshd_config"
+  sudo sed -i 's/^PermitRootLogin.*/PermitRootLogin no/' "$sshd_config"
   echo "PermitRootLogin has been disabled"
 
   # Disable PasswordAuthentication (Use SSH Keys instead)
-  sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' "$sshd_config"
+  sudo sed -i 's/^PasswordAuthentication.*/PasswordAuthentication no/' "$sshd_config"
   echo "PasswordAuthentication has been disabled"
 
   # Restart the SSH Server to apply changes
-  systemctl restart sshd
+  sudo systemctl restart sshd
 
   echo "SSH server has been secured. Please make sure to use key-based authentication for SSH access."
 }
