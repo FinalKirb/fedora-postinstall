@@ -597,7 +597,7 @@ batch_personalize
 batch_security
 echo
 echo "Post-Installation script completed successfully."
-read -p "Do you want to reboot your system now?" confirm_reboot
+read -p "Do you want to reboot your system now? (y/n): " confirm_reboot
 if [ "$confirm_reboot" == "y" ]; then # Press "y" to confirm reboot
   sudo reboot
   exit
