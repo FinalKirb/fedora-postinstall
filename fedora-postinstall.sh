@@ -498,6 +498,7 @@ enable_remove_old_temp_files() {
   echo "Enabling automatic removal of old temp-files..."
   gsettings set org.gnome.desktop.privacy remove-old-temp-files 'true'
   echo "Automatic removal of old temp-files has been enabled."
+  echo
 }
 
 
