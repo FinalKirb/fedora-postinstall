@@ -563,15 +563,15 @@ install_fail2ban() {
 	sudo dnf -y install fail2ban
 	sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
-	sudo echo "
-	[sshd]
-	enabled = true
-	port = ssh
-	filter = sshd
-	logpath = /var/log/auth.log
-	maxretry = 3
-	bantime = 3600
-	" >> /etc/fail2ban/jail.local
+  sudo chown $USER:$USER /etc/fail2ban/jail.local
+
+  sudo bash -c 'echo "[sshd]
+  enabled = true
+  port = ssh
+  filter = sshd
+  logpath = /var/log/auth.log
+  maxretry = 3
+  bantime = 3600" | tee -a /etc/fail2ban/jail.local'
 
 	sudo systemctl start fail2ban
 	sudo systemctl enable fail2ban
