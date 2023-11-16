@@ -12,9 +12,9 @@ exec 2> >(tee -i "$error_log_file")
 echo
 date
 
-packages_dnf="vim tldr btop fastfetch hwinfo cmatrix figlet lolcat gnome-tweaks timeshift thunderbird mpv steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkBasalt gamemode virt-manager qemu wine"
+packages_dnf="vim tldr btop fastfetch cmatrix figlet lolcat gnome-tweaks timeshift thunderbird steam libreoffice-base libreoffice-draw nextcloud-client goverlay mangohud vkBasalt gamemode virt-manager qemu wine"
 packages_dnf_uninstall="gnome-tour rhythmbox"
-packages_flatpak="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community com.github.Eloston.UngoogledChromium net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity org.atheme.audacious com.github.wwmm.easyeffects org.upscayl.Upscayl io.github.seadve.Mousai io.freetubeapp.FreeTube fr.romainvigier.MetadataCleaner net.davidotek.pupgui2"
+packages_flatpak="com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal ca.desrt.dconf-editor net.nokyan.Resources com.bitwarden.desktop org.keepassxc.KeePassXC org.bleachbit.BleachBit uk.org.greenend.chiark.sgtatham.putty io.github.peazip.PeaZip io.gitlab.librewolf-community com.github.Eloston.UngoogledChromium net.mullvad.MullvadBrowser com.github.micahflee.torbrowser-launcher com.discordapp.Discord dev.pulsar_edit.Pulsar com.obsproject.Studio org.qbittorrent.qBittorrent org.gimp.GIMP org.kde.krita org.kde.kdenlive org.audacityteam.Audacity io.mpv.Mpv org.atheme.audacious com.github.wwmm.easyeffects org.upscayl.Upscayl io.github.seadve.Mousai io.freetubeapp.FreeTube fr.romainvigier.MetadataCleaner net.davidotek.pupgui2"
 
 
 # Script no longer checks for root access as it doesn't work with the 'gsettings' commands. Instead, run the script normally (WITHOUT SUDO) and just enter your sudo password when prompted.
