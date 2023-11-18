@@ -401,7 +401,6 @@ setup_nautilus() {
   gsettings set org.gnome.nautilus.preferences show-create-link 'true'
   gsettings set org.gnome.nautilus.preferences show-delete-permanently 'true'
   gsettings set org.gnome.nautilus.preferences show-hidden-files 'true'
-  gsettings set org.gnome.nautilus.preferences thumbnail-limit '100'
 
   # File Chooser
   gsettings set org.gtk.gtk4.Settings.FileChooser sort-column 'type'
