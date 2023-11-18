@@ -596,6 +596,8 @@ batch_personalize
 batch_security
 echo
 echo "Post-Installation script completed successfully."
+echo "Don't forget to install: ocs-url, Mullvad VPN, Veracrypt, Protonmail Bridge"
+echo
 read -p "Do you want to reboot your system now? (y/n): " confirm_reboot
 if [ "$confirm_reboot" == "y" ]; then # Press "y" to confirm reboot
   sudo reboot
