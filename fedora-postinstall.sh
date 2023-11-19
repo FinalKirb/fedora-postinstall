@@ -248,7 +248,7 @@ install_software_flatpak() {
 
 # Function to install multimedia codecs
 install_codecs() {
-  echo "Installing Non-Free Multimedia Codecs"
+  echo "Installing Non-Free Multimedia Codecs..."
   sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing
   echo "Non-Free Multimedia Codecs have been installed."
   echo
