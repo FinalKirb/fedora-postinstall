@@ -1,9 +1,6 @@
 #!/bin/bash
 set -e # Exit the Script on Error Message
 
-# TODO execute functions, create mother functions that run other functions (system_update -> update_flatpak % update_dnf)
-
-
 # Redirect output to a log file in the same directory
 log_file="fedora-postinstall.log"
 error_log_file="fedora-postinstall-error.log"
@@ -73,13 +70,25 @@ system_cleanup
 # Function to speed up DNF
 speed_up_dnf() {
   echo "Speeding up DNF..."
+
+
   if grep -q 'max_parallel_downloads' /etc/dnf/dnf.conf; then
    echo "max_parallel_downloads is already set up in /etc/dnf/dnf.conf, skipping step."
    return
   else
     echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
-    echo "DNF has been sped up."
   fi
+
+
+  if grep -q 'fastestmirror' /etc/dnf/dnf.conf; then
+    echo "fastestmirror is already set up in /etc/dnf/dnf.conf, skipping step."
+    return
+  else
+    echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+  fi
+
+
+  echo "DNF has been sped up."
   echo
 }
 
