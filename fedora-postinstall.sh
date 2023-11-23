@@ -581,8 +581,8 @@ install_fail2ban() {
   maxretry = 3
   bantime = 3600" | tee -a /etc/fail2ban/jail.local'
 
-	sudo systemctl start fail2ban
 	sudo systemctl enable fail2ban
+  sudo systemctl restart fail2ban
 
 	echo "Fail2Ban has been installed and configured."
 	echo
