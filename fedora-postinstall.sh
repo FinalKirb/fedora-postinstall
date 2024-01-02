@@ -104,7 +104,7 @@ enable_flatpak() {
       return
     fi
   fi
-  sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: Flathub could not be enabled. Check the logs for more information." >&2
     echo
@@ -173,7 +173,7 @@ update_flatpak() {
     echo
     return
   fi
-  sudo flatpak -y update
+  flatpak -y update
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: Flatpak Packages could not be updated, skipping step." >&2
     echo
@@ -244,7 +244,7 @@ install_software_dnf() {
 # Function to install Flatpak packages
 install_software_flatpak() {
 	echo "Installing Flatpak Packages..."
-	sudo flatpak -y install $packages_flatpak
+	flatpak -y install $packages_flatpak
   if [ $? -ne 0 ]; then # Checks if the output of the previous command is an error message
     echo "Error: Flatpak packages could not be installed. Check the logs for more information." >&2
     echo
@@ -257,9 +257,16 @@ install_software_flatpak() {
 
 # Function to install multimedia codecs
 install_codecs() {
-  echo "Installing Non-Free Multimedia Codecs..."
+  echo "Installing Non-Free Codecs..."
   sudo dnf -y swap ffmpeg-free ffmpeg --allowerasing
+  sudo dnf -y groupupdate multimedia --setop="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin
+  sudo dnf -y groupupdate sound-and-video
   echo "Non-Free Multimedia Codecs have been installed."
+  echo
+  echo "Installing Mesa-Freeworld drivers..."
+  sudo dnf swap mesa-va-drivers mesa-va-drivers-freeworld
+  sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
+  echo "Mesa-Freeworld drivers have been installed."
   echo
 }
 
